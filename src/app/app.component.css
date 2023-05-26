@@ -5,3 +5,11 @@
 .row {
   margin: 20px 0;
 }
+
+button {
+  margin-top: 10px;
+}
+
+label {
+  margin: 5px;
+}

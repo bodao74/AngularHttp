@@ -6,11 +6,10 @@ import { Post } from './post.model';
 import { PostService } from './posts.service';
 import { ThisReceiver } from '@angular/compiler';
 
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit, OnDestroy {
   loadedPosts: Post[] = [];
@@ -21,17 +20,14 @@ export class AppComponent implements OnInit, OnDestroy {
 
   errorSubscription: Subscription;
 
-  constructor(
-    private http: HttpClient,
-    private postService: PostService) {
-
-  }
+  constructor(private http: HttpClient, private postService: PostService) {}
 
   ngOnInit() {
     this.errorSubscription = this.postService.error.subscribe(
-      errorMessage => {
+      (errorMessage) => {
         this.error = errorMessage;
-      });
+      }
+    );
     this.fetchPosts();
   }
 
@@ -55,12 +51,26 @@ export class AppComponent implements OnInit, OnDestroy {
 
   private fetchPosts() {
     this.isFetching = true;
-    this.postService.fetchPosts().subscribe((posts) => {
+    /*this.postService.fetchPosts().subscribe((posts) => {
       this.isFetching = false;
       this.loadedPosts = posts;
     }, error => {
       this.error = "(" + error.status + ")" + " " + error.statusText;
       console.log(error);
+    });
+    
+    ALTERADO POIS O SUBSCRIBE DESSA FORMA ESTÁ DEPRECATED
+    
+    */
+    this.postService.fetchPosts().subscribe({
+      next: (posts) => {
+        this.isFetching = false;
+        this.loadedPosts = posts;
+      },
+      error: (error) => {
+        this.error = '(' + error.status + ')' + ' ' + error.statusText;
+        console.log(error);
+      },
     });
   }
 
